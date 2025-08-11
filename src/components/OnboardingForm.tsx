@@ -86,9 +86,23 @@ export default function OnboardingForm() {
     }
 
     try {
-      // Aqui você adicionaria a chamada para o webhook
-      // Por enquanto, simula o envio
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Enviar dados para o webhook
+      const response = await fetch('https://autowebhook.assistentefinanceiro.site/webhook/onboard', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          fullName: formData.fullName,
+          phoneNumber: formData.phoneNumber,
+          password: formData.password,
+          timestamp: new Date().toISOString(),
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Falha ao enviar dados');
+      }
       
       toast({
         title: "Sucesso!",
